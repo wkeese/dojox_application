@@ -179,15 +179,22 @@ function(kernel, require, lang, declare, Deferred, when, has, config, on, ready,
 			//		the params object
 			//
 			var params = {};
+			var addedParam = false;
 			if(hash && hash.length){
 				for(var parts= hash.split("&"), x= 0; x<parts.length; x++){
 					var tp = parts[x].split("="), name=tp[0], value=encodeURIComponent(tp[1]||""); 
 					if(name && value) {
+						addedParam = true;
 						params[name] = value;
 					}
 				}
 			}
-			return params; // Object
+			if(addedParam){
+				return params; // Object	
+			}else{
+				return null;
+			}
+			
 		},
 
 		setupControllers: function(){
@@ -199,7 +206,7 @@ function(kernel, require, lang, declare, Deferred, when, has, config, on, ready,
 			// move set _startView operation from history module to application
 			var hash = window.location.hash;
 			this._startView = (((hash && hash.charAt(0) == "#") ? hash.substr(1) : hash) || this.defaultView).split('&')[0];
-			this._startParams = this.getParamsFromHash(hash) || this.defaultParams || {};
+			this._startParams = this.getParamsFromHash(hash) || this.defaultParams || null;
 		},
 
 		startup: function(){

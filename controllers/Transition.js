@@ -92,7 +92,7 @@ function(lang, declare, on, Deferred, when, transit, Controller){
 			this.proceeding = true;
 
 			this.app.log("in app/controllers/Transition proceedTransition calling trigger load", transitionEvt);
-			var params = transitionEvt.params || {};
+			var params = transitionEvt.params || null;
 			if(transitionEvt.opts && transitionEvt.opts.params){
 				params = transitionEvt.params || transitionEvt.opts.params;
 			}
@@ -178,7 +178,9 @@ function(lang, declare, on, Deferred, when, transit, Controller){
 			}
 
 			// set params on next view.
-			next.params = params || next.params;
+			if(params){
+				next.update(params);
+			}
 
 			// if no subIds and next has default view, 
 			// set the subIds to the default view and transition to default view.

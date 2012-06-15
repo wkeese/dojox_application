@@ -110,7 +110,7 @@ function(lang, declare, on, Controller){
 			}
 
 			var target = state.target || this.app._startView || this.app.defaultView;
-			var params = state.params || this.app._startParams || this.app.defaultParams || {};
+			var params = state.params || this.app._startParams || this.app.defaultParams || null;
 
 			if(this.app._startView){
 				this.app._startView = null;

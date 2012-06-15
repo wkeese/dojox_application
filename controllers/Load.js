@@ -1,5 +1,5 @@
-define(["dojo/_base/lang", "dojo/_base/declare", "dojo/on", "dojo/Deferred", "dojo/when", "../Controller", "../View"],
-function(lang, declare, on, Deferred, when, Controller, View){
+define(["dojo/_base/lang", "dojo/_base/declare", "dojo/on", "dojo/Deferred", "dojo/when", "dijit/registry", "../Controller", "../View"],
+function(lang, declare, on, Deferred, when, registry, Controller, View){
 	// module:
 	//		dojox/app/controllers/Load
 	// summary:
@@ -42,7 +42,7 @@ function(lang, declare, on, Deferred, when, Controller, View){
 			var parts = viewId.split(',');
 			var childId = parts.shift();
 			var subIds = parts.join(",");
-			var params = event.params || "";
+			var params = event.params || null;
 			
 			var def = this.loadChild(parent, childId, subIds, params);
 			// call Load event callback
@@ -71,12 +71,18 @@ function(lang, declare, on, Deferred, when, Controller, View){
 				return parent.children[id];
 			}
 			//create and start child. return Deferred
-			var newView = new View(lang.mixin({
-				"app": this.app,
-				"id": id,
-				"name": childId,
-				"parent": parent
-			},{"params": params}));
+			var newView = registry.byId(id);
+			if(!newView) {			
+				var newView = new View({
+					"app": this.app,
+					"id": id,
+					"name": childId,
+					"parent": parent
+				});
+			}
+			if(params){
+				newView.update(params);
+			}
 			parent.children[id] = newView;
 			return newView.start();
 		},

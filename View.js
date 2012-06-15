@@ -6,6 +6,7 @@ function(declare, lang, Deferred, when, require, dattr, TemplatedMixin, WidgetsI
 	//		dojox.app view object, each view can have one parent view and several children views.
 
 	return declare("dojox.app.View", null, {
+		
 		constructor: function(params){
 			// summary:
 			//		init view object. A user can use configuration file or programing type to create a view instance.
@@ -42,6 +43,7 @@ function(declare, lang, Deferred, when, require, dattr, TemplatedMixin, WidgetsI
 			//
 			// params:
 			//		view parameters, include:
+			//		app: the app
 			//		id: view id
 			//		name: view name
 			//		template: view template url. If templateString not empty, ignore this parameter.
@@ -49,6 +51,7 @@ function(declare, lang, Deferred, when, require, dattr, TemplatedMixin, WidgetsI
 			//		definition: view definition url
 			//		parent: parent view
 			//		children: children views
+			this.app = null;
 			this.id = "";
 			this.name = "";
 			this.templateString = "";
@@ -275,6 +278,12 @@ function(declare, lang, Deferred, when, require, dattr, TemplatedMixin, WidgetsI
 		init: function(){
 			// summary:
 			//		view life cycle init()
+		},
+		
+		update: function(params){
+			// summary:
+			//		view update params 
+			this.params = params;
 		},
 
 		beforeActivate: function(){
